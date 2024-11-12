@@ -12,11 +12,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
       with:
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: osn-tutogenius-799-sbx
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+        
+    - name: 'Get GCP project ID'
+      id: 'get-project'
+      run: |
+        echo "::set-output name=project_id::$(jq -r '.project_id' <<< '${{ secrets.GCP_CREDENTIALS }}')"
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+      with:
+        project_id: ${{ steps.get-project.outputs.project_id }}
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
 
     - name: Deploy to Cloud Function
       run: |
