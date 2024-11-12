@@ -27,11 +27,11 @@ jobs:
       with:
         project_id: ${{ steps.get-project.outputs.project_id }}
 
-    - name: 'Grant Cloud Functions permission'
-      run: |
-        gcloud projects add-iam-policy-binding ${{ steps.get-project.outputs.project_id }} \
-          --member=serviceAccount:$(jq -r '.client_email' <<< '${{ secrets.GCP_SA_KEY }}') \
-          --role=roles/cloudfunctions.developer
+    # - name: 'Grant Cloud Functions permission'
+    #   run: |
+    #     gcloud projects add-iam-policy-binding ${{ steps.get-project.outputs.project_id }} \
+    #       --member=serviceAccount:$(jq -r '.client_email' <<< '${{ secrets.GCP_SA_KEY }}') \
+    #       --role=roles/cloudfunctions.developer
 
     - name: Deploy to Cloud Function
       run: |
