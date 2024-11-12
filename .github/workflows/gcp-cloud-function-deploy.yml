@@ -43,6 +43,7 @@ jobs:
          
         
         echo "Function deployed successfully!"
+        
 
 # --project=${{ steps.get-project.outputs.project_id }} \
 # --service-account=644400037774@cloudbuild.gserviceaccount.com
