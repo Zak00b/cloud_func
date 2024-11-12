@@ -40,7 +40,9 @@ jobs:
           --allow-unauthenticated \
           --entry-point=main \
           --region=europe-west4 \
-          --project=${{ steps.get-project.outputs.project_id }} \
-          --service-account=644400037774@cloudbuild.gserviceaccount.com
+         
         
         echo "Function deployed successfully!"
+
+# --project=${{ steps.get-project.outputs.project_id }} \
+# --service-account=644400037774@cloudbuild.gserviceaccount.com
