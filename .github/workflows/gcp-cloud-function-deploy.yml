@@ -41,6 +41,6 @@ jobs:
           --entry-point=main \
           --region=europe-west4 \
           --project=${{ steps.get-project.outputs.project_id }} \
-          --service-account=644400037774-compute@developer.gserviceaccount.com
+          --trigger-service-account=644400037774-compute@developer.gserviceaccount.com
         
         echo "Function deployed successfully!"
