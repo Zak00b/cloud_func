@@ -31,21 +31,16 @@ jobs:
       run: |
         echo ${{ steps.get-project.outputs.project_id }}
 
-    # - name: 'Grant Cloud Functions permission'
-    #   run: |
-    #     gcloud projects add-iam-policy-binding ${{ steps.get-project.outputs.project_id }} \
-    #       --member=serviceAccount:$(jq -r '.client_email' <<< '${{ secrets.GCP_SA_KEY }}') \
-    #       --role=roles/cloudfunctions.developer
 
-    # - name: Deploy to Cloud Function
-    #   run: |
-    #     gcloud functions deploy main \
-    #       --runtime=python312 \
-    #       --trigger-http \
-    #       --allow-unauthenticated \
-    #       --entry-point=main \
-    #       --region=europe-west4 \
-    #       --project=${{ steps.get-project.outputs.project_id }} 
-    #       --service-account=644400037774-compute@developer.gserviceaccount.com
+    - name: Deploy to Cloud Function
+      run: |
+        gcloud functions deploy main \
+          --runtime=python312 \
+          --trigger-http \
+          --allow-unauthenticated \
+          --entry-point=main \
+          --region=europe-west4 \
+          --project=${{ steps.get-project.outputs.project_id }} \
+          --service-account=644400037774-compute@developer.gserviceaccount.com
         
-    #     echo "Function deployed successfully!"
+        echo "Function deployed successfully!"
