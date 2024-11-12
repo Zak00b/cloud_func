@@ -20,7 +20,7 @@ jobs:
     - name: 'Get GCP project ID'
       id: 'get-project'
       run: |
-        echo "::set-output name=project_id::$(jq -r '.project_id' <<< '${{ secrets.GCP_SA_KEY }}')"
+        echo "project_id=$(jq -r '.project_id' <<< '${{ secrets.GCP_SA_KEY }}')" >> $GITHUB_OUTPUT
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
