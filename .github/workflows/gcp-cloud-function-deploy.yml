@@ -15,12 +15,12 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
-        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
         
     - name: 'Get GCP project ID'
       id: 'get-project'
       run: |
-        echo "::set-output name=project_id::$(jq -r '.project_id' <<< '${{ secrets.GCP_CREDENTIALS }}')"
+        echo "::set-output name=project_id::$(jq -r '.project_id' <<< '${{ secrets.GCP_SA_KEY }}')"
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
