@@ -41,9 +41,9 @@ jobs:
         run: |
           gcloud functions deploy hello \
           --gen2 \
+          --region=us-east1 \
           --runtime=python310 \
           --trigger-http \
           --allow-unauthenticated \
           --entry-point=main \
-          --service-account=$SERVICE_ACCOUNT \
-          # --verbosity=debug
+          --service-account=$SERVICE_ACCOUNT
