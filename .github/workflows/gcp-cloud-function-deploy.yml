@@ -27,4 +27,7 @@ jobs:
           --gen2 \
           --region=us-east1 \
           --runtime=python310 \
-          --entry-point=main
+          --trigger-http \
+          --allow-unauthenticated \
+          --entry-point=main 
+          
