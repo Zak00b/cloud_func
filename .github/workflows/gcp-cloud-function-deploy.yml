@@ -43,6 +43,7 @@ jobs:
           --gen2 \
           --region=us-east1 \
           --runtime=python310 \
+          --source=src \
           --trigger-http \
           --allow-unauthenticated \
           --entry-point=main \
