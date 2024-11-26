@@ -14,31 +14,36 @@ jobs:
       id-token: 'write'
 
     steps:
+      # Step 1: Checkout the repository
       - uses: actions/checkout@v3
-      
+
+      # Step 2: Authenticate to Google Cloud using the credentials JSON
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: '${{ secrets.GCP_SA_DEPLOY_KEY }}'
-      - name: 'Set up Cloud SDK'
+
+      # Step 3: Set up Google Cloud SDK
+      - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v1'
         with:
-          project_id: 'osn-tutogenius-799-sbx'  
           version: '>= 363.0.0'
-          
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
-        
-      - name: 'Deploy to gen2 cloud function'
+
+      # Step 4: Extract Service Account Email and Project ID
+      - name: Extract Service Account Email and Project ID
+        id: extract-env-vars
+        run: |
+          echo "SERVICE_ACCOUNT=$(jq -r '.client_email' <<< '${{ secrets.GCP_SA_DEPLOY_KEY }}')" >> $GITHUB_ENV
+
+      # Step 6: Deploy the Cloud Function
+      - name: Deploy to gen2 cloud function
         run: |
           gcloud functions deploy hello \
           --gen2 \
-          --project=osn-tutogenius-799-sbx \
-          --region=us-east1 \
           --runtime=python310 \
           --trigger-http \
           --allow-unauthenticated \
           --entry-point=main \
-          --service-account=644400037774-compute@developer.gserviceaccount.com \
-          --verbosity=debug
+          --service-account=$SERVICE_ACCOUNT \
+          # --verbosity=debug
