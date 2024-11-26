@@ -1,49 +1,30 @@
-name: Deploy to GCP Cloud Function
-
+name: Deploy Cloud Functions
+run-name: 🚀 ${{ github.actor }} is deploying all cloud functions
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        credentials_json: '${{ secrets.GCP_SA_KEY }}'
-        
-    - name: 'Get GCP project ID'
-      id: 'get-project'
-      run: |
-        echo "project_id=$(jq -r '.project_id' <<< '${{ secrets.GCP_SA_KEY }}')" >> $GITHUB_OUTPUT
-
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v2'
-      with:
-        project_id: ${{ steps.get-project.outputs.project_id }}
-
-    - name: 'Print'
-      run: |
-        echo ${{ steps.get-project.outputs.project_id }}
-
-
-    - name: Deploy to Cloud Function
-      run: |
-        gcloud functions deploy main \
-          --runtime=python312 \
-          --trigger-http \
-          --allow-unauthenticated \
-          --entry-point=main \
-          --region=europe-west4 \
-         
-        
-        echo "Function deployed successfully!"
-        
-
-# --project=${{ steps.get-project.outputs.project_id }} \
-# --service-account=644400037774@cloudbuild.gserviceaccount.com
+      - uses: actions/checkout@v3
+      - run: ls
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_DEPLOY_KEY }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          version: '>= 363.0.0'
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+      - name: 'Deploy to gen2 cloud function'
+        run:  |
+          gcloud functions deploy hello \
+          --gen2 \
+          --region=us-east1 \
+          --runtime=python310 \
+          --entry-point=main
