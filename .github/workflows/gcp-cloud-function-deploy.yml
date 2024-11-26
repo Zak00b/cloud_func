@@ -35,10 +35,11 @@ jobs:
         run: |
           gcloud functions deploy hello \
           --gen2 \
-          --project=osn-tutogenius-799-sbx \  
+          --project=osn-tutogenius-799-sbx \
           --region=us-east1 \
           --runtime=python310 \
           --trigger-http \
           --allow-unauthenticated \
           --entry-point=main \
-          --service-account='644400037774-compute@developer.gserviceaccount.com'
+          --service-account=644400037774-compute@developer.gserviceaccount.com \
+          --verbosity=debug
